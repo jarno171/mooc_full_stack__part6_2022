@@ -17,6 +17,10 @@ const asObject = (anecdote) => {
   }
 }
 
+const sortAnecdotes = (anecdotes) => {
+  return [...anecdotes].sort((a,b) => (a.votes > b.votes) ? -1 : ((b.votes > a.votes) ? 1 : 0))
+}
+
 const initialState = anecdotesAtStart.map(asObject)
 
 const reducer = (state = initialState, action) => {
@@ -26,7 +30,7 @@ const reducer = (state = initialState, action) => {
       const anecdoteToUpdate = state.find(anecdote => anecdote.id === action.data.id)
       anecdoteToUpdate.votes += 1
 
-      return state.map(anecdote => 
+      return sortAnecdotes(state).map(anecdote => 
         anecdote.id !== action.data.id ? anecdote : anecdoteToUpdate
       )
     case("ADD"):
