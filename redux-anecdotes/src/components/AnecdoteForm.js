@@ -14,6 +14,7 @@ const AnecdoteForm = (props) => {
 
   return (
     <>
+      <h2>create new</h2>
       <form onSubmit={handleAdd}>
         <div><input name="anecdote" /></div>
         <button >create</button>
