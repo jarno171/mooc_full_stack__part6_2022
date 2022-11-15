@@ -2,14 +2,6 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const getId = () => (100000 * Math.random()).toFixed(0)
 
-const asObject = (anecdote) => {
-  return {
-    content: anecdote,
-    id: getId(),
-    votes: 0
-  }
-}
-
 const sortAnecdotes = (anecdotes) => {
   return anecdotes.sort((a,b) => (a.votes > b.votes) ? -1 : ((b.votes > a.votes) ? 1 : 0))
 }
@@ -25,7 +17,7 @@ const anecdoteSlice = createSlice({
       sortAnecdotes(state)
     },
     addAnecdote(state, action) {
-      return state.concat(asObject(action.payload))
+      return state.concat(action.payload)
     },
     appendAnecdote(state, action) {
       return state.concat(action.payload)
