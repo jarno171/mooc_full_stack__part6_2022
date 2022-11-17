@@ -1,0 +1,11 @@
+###
+GET http://localhost:3001/anecdotes
+
+###
+PUT http://localhost:3001/anecdotes/Eajfcvd HTTP/1.1
+content-type: application/json
+
+{
+  "content": "dsa",
+  "votes": 1
+}

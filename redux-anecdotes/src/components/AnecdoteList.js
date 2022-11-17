@@ -1,12 +1,18 @@
 import { useRef } from 'react'
-import { incrementVote, } from '../reducers/anecdoteReducer'
+import { updateVote, } from '../reducers/anecdoteReducer'
 import { setNotification, resetNotification } from '../reducers/notificationReducer'
 import { useSelector, useDispatch } from 'react-redux'
 
-const vote = (dispatcher, id, content, clearTimerRef) => {
+const vote = (dispatcher, id, content, votes, clearTimerRef) => {
   clearTimeout(clearTimerRef.current)
 
-  dispatcher(incrementVote(id))
+  const updatedAnecdote = {
+    id: id,
+    content: content,
+    votes: votes + 1
+  }
+
+  dispatcher(updateVote(updatedAnecdote))
   dispatcher(setNotification(`you voted for "${content}"`))
 
   clearTimerRef.current = setTimeout(() => {
@@ -34,7 +40,7 @@ const AnecdoteList = () => {
           </div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(dispatch, anecdote.id, anecdote.content, clearTimerRef)}>vote</button>
+            <button onClick={() => vote(dispatch, anecdote.id, anecdote.content, anecdote.votes, clearTimerRef)}>vote</button>
           </div>
         </div>
       )}

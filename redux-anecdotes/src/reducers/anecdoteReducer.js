@@ -33,7 +33,7 @@ export default anecdoteSlice.reducer
 export const initializeAnecdotes = () => {
   return async dispatch => {
     const anecdotes = await anecdoteService.getAll()
-    dispatch(setAnecdotes(anecdotes))
+    dispatch(setAnecdotes(sortAnecdotes(anecdotes)))
   }
 }
 
@@ -41,5 +41,12 @@ export const createAnecdote = content => {
   return async dispatch => {
     const newAnecdote = await anecdoteService.createNew(content)
     dispatch(appendAnecdote(newAnecdote))
+  }
+}
+
+export const updateVote = content => {
+  return async dispatch => {
+    const updatedAnecdote = await anecdoteService.update(content)
+    dispatch(incrementVote(updatedAnecdote.id))
   }
 }
