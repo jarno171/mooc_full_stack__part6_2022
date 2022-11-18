@@ -1,37 +1,33 @@
 import { updateVote, } from '../reducers/anecdoteReducer'
 import { setNotificationFull } from '../reducers/notificationReducer'
-import { useSelector, useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 
-const vote = (dispatcher, id, content, votes) => {
+const vote = (props, id, content, votes) => {
   const updatedAnecdote = {
     id: id,
     content: content,
     votes: votes + 1
   }
 
-  dispatcher(updateVote(updatedAnecdote))
-  dispatcher(setNotificationFull(`you voted for "${content}"`, 5))
+  props.updateVote(updatedAnecdote)
+  props.setNotificationFull(`you voted for "${content}"`, 5)
 }
 
-const AnecdoteList = () => {
+const AnecdoteList = (props) => {
 
-  const anecdotes = useSelector(state => state.anecdotes)
-  const filter = useSelector(state => state.filter)
-  const dispatch = useDispatch()
-
-  const anecdotesFiltered = anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()))
+  const anecdotes = props.anecdotes
 
   return (
     <>
       <h2>Anecdotes</h2>
-      {anecdotesFiltered.map(anecdote =>
+      {anecdotes.map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
           </div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(dispatch, anecdote.id, anecdote.content, anecdote.votes)}>vote</button>
+            <button onClick={() => vote(props, anecdote.id, anecdote.content, anecdote.votes)}>vote</button>
           </div>
         </div>
       )}
@@ -39,4 +35,16 @@ const AnecdoteList = () => {
   )
 }
 
-export default AnecdoteList
+const mapStateToProps = (state) => {
+  return {
+    anecdotes: state.anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(state.filter.toLowerCase()))
+  }
+}
+
+const mapDispatchToProps = {
+  updateVote,
+  setNotificationFull,
+}
+
+const ConnectedAnecdotes = connect(mapStateToProps, mapDispatchToProps)(AnecdoteList)
+export default ConnectedAnecdotes
